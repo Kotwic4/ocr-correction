@@ -129,7 +129,10 @@ class EvalContext:
 
         # Load file data
         with open(filePath, 'rb') as f:
-            self.ocrOriginal, self.ocrAligned, self.gsAligned = [txt[14:] for txt in re.split(r"\r?\n", f.read().decode("utf-8"))]
+            result = [txt[14:] for txt in re.split(r"\r?\n", f.read().decode("utf-8"))]
+            if len(result) == 4 and result[-1] == '':
+                result = result[:-1]
+            self.ocrOriginal, self.ocrAligned, self.gsAligned = result
 
         # Check file integrity
         assert self.ocrOriginal == re.sub(self.charExtend, "", self.ocrAligned), "[ERROR] : [OCR_aligned] without \"%s\" doesn't correspond to [OCR_toInput] " % self.charExtend
