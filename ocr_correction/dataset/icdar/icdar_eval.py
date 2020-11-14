@@ -1,8 +1,9 @@
 import logging
 import re
+from datetime import datetime
 
 from ocr_correction.dataset.icdar.evalTool_ICDAR2017 import EvalContext, maxNbCandidate
-from ocr_correction.solutions.solution import Solution
+from ocr_correction.solutions.solution import Solution, Task1Solution, calc_errors_range
 
 
 class ICDAREval(EvalContext):
@@ -41,6 +42,8 @@ class ICDAREval(EvalContext):
 
             if tokenInOcr != tokenInGs and (ingored_char and show_ignore or not ingored_char and show_errors):
                 num_token = tokenInOcr.count(" ") + 1
+                if tokenStartPosOriginal not in self.token_pos_map:
+                    print("dupa")
                 start_i = self.token_pos_map[tokenStartPosOriginal]
                 end_i = start_i + num_token
 
@@ -155,3 +158,34 @@ class ICDAREval(EvalContext):
         logging.info(result)
 
         return result
+
+    def check_task1(self, solution: Task1Solution):
+        # logging.info(self.file_path)
+
+        tokens = self.tokens
+
+        start = datetime.now()
+        e_tokens = solution.find_errors(tokens)
+        end = datetime.now()
+
+        error_range = calc_errors_range(e_tokens)
+        fixed_errors = [(start_i, end_i, {}) for start_i, end_i in error_range]
+
+        tokenPosErrReshaped = self.parse_token_errors(fixed_errors)
+        logging.debug(tokenPosErrReshaped)
+
+        # Task 1) Run the evaluation : Detection of the position of erroneous tokens
+        prec, recall, fmes = self.task1_eval(tokenPosErrReshaped)
+        logging.debug((prec, recall, fmes))
+
+        nbTokens, nbErrTokens, nbErrTokensAlpha = self.get_errors_stats()
+
+        return (
+            self.file_path,
+            nbTokens,
+            nbErrTokens,
+            prec,
+            recall,
+            fmes,
+            end-start
+        )

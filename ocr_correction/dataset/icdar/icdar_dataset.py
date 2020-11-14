@@ -1,11 +1,12 @@
 import logging
 from collections import Counter
+import datetime
 from typing import List
 
 from sklearn.model_selection import train_test_split
 
 from ocr_correction.dataset.icdar.icdar_eval import ICDAREval
-from ocr_correction.solutions.solution import Solution, range_to_indexes
+from ocr_correction.solutions.solution import Solution, range_to_indexes, Task1Solution
 from ocr_correction.utils.fileUtils import get_filesnames_from_directory
 
 
@@ -29,6 +30,28 @@ def check_files(solution: Solution, files: List[ICDAREval]):
     logging.info(task2)
 
     return task1, task2, results
+
+
+def check_task_1(solution: Task1Solution, files: List[ICDAREval]):
+    results = []
+
+    logging.info(f"check on {len(files)} files")
+
+    for file in files:
+        result = file.check_task1(solution)
+        results.append(result)
+
+    nbTokens = [r[1] for r in results]
+    fmes = [r[5] for r in results]
+    time = [r[6] for r in results]
+
+    task1 = sum(x * y for x, y in zip(fmes, nbTokens)) / sum(nbTokens)
+    task1_time = sum(time, datetime.timedelta())
+
+    logging.info(task1)
+    logging.info(task1_time)
+
+    return task1, task1_time, results
 
 
 class IcdarDataset:

@@ -36,6 +36,7 @@ class NaiveSolution(Solution):
         self.correct_words = set()
         self.correct_words.update(set([parse_token(e) for e in brown.words()]))
         self.correct_words.update(set([parse_token(e) for e in words.words()]))
+        self.correct_cache = set()
 
     def check_token(self, token: str):
         token = parse_token(token)
@@ -59,12 +60,16 @@ class NaiveSolution(Solution):
         return [i for i, e in enumerate(tokens) if not self.check_token(e)]
 
     def correct_error(self, tokens: List[str], start_i: int, end_i: int) -> Dict[str, float]:
-        # return {}
         result = []
         for i in range(start_i, end_i+1):
-            best_matches = list(self.candidates(tokens[i]))
-            if len(best_matches) > 0:
-                result.append(best_matches[0])
+            word = tokens[i]
+            if word in self.correct_cache:
+                result.append(self.correct_cache[word])
+            else:
+                best_matches = list(self.candidates(word))
+                match = best_matches[0]
+                self.correct_cache[tokens[i]] = match
+                result.append(match)
         return {
             ' '.join(result): 1.0
         }

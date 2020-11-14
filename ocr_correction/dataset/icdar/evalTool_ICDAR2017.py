@@ -134,6 +134,14 @@ class EvalContext:
                 result = result[:-1]
             self.ocrOriginal, self.ocrAligned, self.gsAligned = result
 
+            assert self.ocrOriginal[0] != ' '
+            assert self.ocrAligned[0] != ' '
+            for i in range(len(self.gsAligned)):
+                if self.gsAligned[i] != ' ':
+                    break
+                else:
+                    self.gsAligned = self.gsAligned[:i] + '@' + self.gsAligned[i + 1:]
+
         # Check file integrity
         assert self.ocrOriginal == re.sub(self.charExtend, "", self.ocrAligned), "[ERROR] : [OCR_aligned] without \"%s\" doesn't correspond to [OCR_toInput] " % self.charExtend
 
