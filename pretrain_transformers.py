@@ -145,14 +145,14 @@ def main():
     #
     # configurations = [
     #     (data[0], f"{prefix}1", "bert-base-cased", epochs, True, 'max_token_lenght', None, None),
-    #     (data[0], f"{prefix}2", "bert-base-multilingual-cased", epochs, True, 'max_token_lenght', None, None),  0.6568739435569759
+    #     (data[0], f"{prefix}2", "bert-base-multilingual-cased", epochs, True, 'max_token_lenght', None, None),
     #     (data[0], f"{prefix}3", "distilbert-base-cased", epochs, True, 'max_token_lenght', None, None),
     #     (data[0], f"{prefix}4", "distilbert-base-multilingual-cased", epochs, True, 'max_token_lenght', None, None),
     #     (data[0], f"{prefix}5", "roberta-base", epochs, True, 'max_token_lenght', None, None),
-    #     (data[0], f"{prefix}6", "albert-base-v1", epochs, True, 'max_token_lenght', None, None), 0.6519185641168902
+    #     (data[0], f"{prefix}6", "albert-base-v1", epochs, True, 'max_token_lenght', None, None),
     #     (data[1], f"{prefix}7", "albert-base-v1", epochs, True, 'max_token_lenght', None, None),
-    #     (data[2], f"{prefix}8", "albert-base-v1", epochs, True, 'max_token_lenght', None, None), 0.6517479679262266
-    #     (data[3], f"{prefix}9", "albert-base-v1", epochs, True, 'max_token_lenght', None, None), 0.6542167653159828
+    #     (data[2], f"{prefix}8", "albert-base-v1", epochs, True, 'max_token_lenght', None, None),
+    #     (data[3], f"{prefix}9", "albert-base-v1", epochs, True, 'max_token_lenght', None, None),
     #     (data[0], f"{prefix}10", "albert-base-v1", epochs, False, 'max_token_lenght', None, None), 0.6586940242966215
     #     (data[0], f"{prefix}11", "albert-base-v1", epochs, True, 'overlapping', None, None),
     #     (data[0], f"{prefix}12", "albert-base-v1", epochs, False, 'overlapping', None, None),

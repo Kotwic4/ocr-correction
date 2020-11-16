@@ -42,16 +42,21 @@ def check_task_1(solution: Task1Solution, files: List[ICDAREval]):
         results.append(result)
 
     nbTokens = [r[1] for r in results]
+    prec = [r[3] for r in results]
+    recall = [r[4] for r in results]
     fmes = [r[5] for r in results]
     time = [r[6] for r in results]
 
+
     task1 = sum(x * y for x, y in zip(fmes, nbTokens)) / sum(nbTokens)
+    task1_prec = sum(x * y for x, y in zip(prec, nbTokens)) / sum(nbTokens)
+    task1_recall = sum(x * y for x, y in zip(recall, nbTokens)) / sum(nbTokens)
     task1_time = sum(time, datetime.timedelta())
 
     logging.info(task1)
     logging.info(task1_time)
 
-    return task1, task1_time, results
+    return task1, task1_time, results, task1_prec, task1_recall
 
 
 class IcdarDataset:
